@@ -20,7 +20,7 @@ import {
   login as apiLogin,
   logout as apiLogout,
   register as apiRegister,
-  AuthUser,
+  type AuthUser,
 } from "@/utils/auth";
 
 // ─── Types ───────────────────────────────────────────────────────────────────

@@ -41,7 +41,7 @@ export function ChatLayout() {
   const [chatPhase, setChatPhase] = useState<
     "idle" | "searching" | "diagnosis" | "results"
   >("idle");
-  const [currentDiagnosis, setCurrentDiagnosis] = useState<
+  const [_currentDiagnosis, setCurrentDiagnosis] = useState<
     ChatMessage["diagnosis"] | null
   >(null);
 
