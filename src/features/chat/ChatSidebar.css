@@ -12,6 +12,7 @@
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
+  border-right: 1px solid var(--color-border-primary);
 }
 
 .chat-sidebar--collapsed {
@@ -48,7 +49,7 @@
 }
 
 .sidebar-collapsed-icons {
-  width: 56px;
+  width: 100%;
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) 0;
@@ -87,20 +88,21 @@
 }
 
 .chat-sidebar--collapsed .sidebar-toggle {
-  right: auto;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--color-text-secondary, #666);
+  right: 0;
+  left: 0;
+  margin: 0 auto;
+  transform: none;
+  color: var(--color-text-secondary);
 }
 
 .sidebar-toggle:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-sidebar-active);
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-primary);
 }
 
 .chat-sidebar--collapsed .sidebar-toggle:hover {
   background: rgba(0, 0, 0, 0.06);
-  color: var(--color-text-primary, #1a1a2e);
+  color: var(--color-text-primary);
 }
 
 /* ─── Collapsed icon-only touchpoints ─────────────────────────────── */
@@ -181,10 +183,10 @@
   gap: var(--space-3);
   margin: var(--space-3) var(--space-4);
   padding: var(--space-3) var(--space-4);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-lg);
-  color: var(--color-text-sidebar);
+  color: var(--color-text-primary);
   font-size: var(--font-size-sm);
   font-weight: 500;
   width: calc(100% - var(--space-8));
@@ -192,8 +194,8 @@
 }
 
 .sidebar-new-chat:hover {
-  background: rgba(255, 255, 255, 0.14);
-  color: var(--color-text-sidebar-active);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
 }
 
 /* ─── Navigation ──────────────────────────────────────────────────── */
@@ -203,7 +205,7 @@
   flex-direction: column;
   gap: 2px;
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--color-border-primary);
   margin-bottom: var(--space-3);
 }
 
@@ -214,19 +216,20 @@
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
-  color: var(--color-text-sidebar);
+  color: var(--color-text-secondary);
   text-decoration: none;
   transition: all var(--transition-fast);
 }
 
 .sidebar-nav__link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-text-sidebar-active);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
 }
 
 .sidebar-nav__link.active {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--color-text-sidebar-active);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  font-weight: 500;
 }
 
 /* ─── History ─────────────────────────────────────────────────────── */
@@ -244,7 +247,7 @@
   padding: var(--space-2) var(--space-3);
   font-size: var(--font-size-xs);
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--color-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -261,22 +264,25 @@
   gap: var(--space-3);
   padding: var(--space-3);
   border-radius: var(--radius-md);
-  color: var(--color-text-sidebar);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   width: 100%;
   text-align: left;
   transition: all var(--transition-fast);
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .sidebar-history__item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--color-text-sidebar-active);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
 }
 
 .sidebar-history__item svg {
   margin-top: 2px;
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .history-item__content {
@@ -293,7 +299,7 @@
 
 .history-item__date {
   font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--color-text-tertiary);
   margin-top: 2px;
 }
 
@@ -304,7 +310,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--color-border-primary);
   margin-top: auto;
 }
 
@@ -336,7 +342,7 @@
 
 .sidebar-user__email {
   font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.35);
+  color: var(--color-text-tertiary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -353,7 +359,7 @@
 }
 
 .sidebar-history::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-border-primary);
   border-radius: 4px;
 }
 

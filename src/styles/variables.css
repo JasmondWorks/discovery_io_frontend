@@ -6,7 +6,7 @@
   --color-bg-secondary: #f5f7f4;
   --color-bg-tertiary: #eef2ec;
   --color-bg-elevated: #ffffff;
-  --color-bg-sidebar: #1a1f1a;
+  --color-bg-sidebar: #f5f7f4;
   --color-bg-chat: #fafbf9;
   --color-bg-input: #ffffff;
   --color-bg-nature: #e8ede5;
@@ -17,8 +17,8 @@
   --color-text-tertiary: #7a8f7a;
   --color-text-inverse: #ffffff;
   --color-text-on-accent: #ffffff;
-  --color-text-sidebar: #c8d4c4;
-  --color-text-sidebar-active: #ffffff;
+  --color-text-sidebar: #4a5e4a;
+  --color-text-sidebar-active: #1a2e1a;
 
   /* Accent — Sage Green */
   --color-accent: #4a6741;
