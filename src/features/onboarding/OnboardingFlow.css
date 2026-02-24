@@ -1,16 +1,23 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Onboarding Flow
+   ═══════════════════════════════════════════════════════════════════ */
+
 .onboarding-container {
-  padding-top: var(--space-16);
-  padding-bottom: var(--space-16);
-  min-height: 80vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: var(--space-8);
+  background: var(--gradient-hero);
 }
 
+/* Progress bar */
 .onboarding-progress {
   width: 100%;
+  max-width: 480px;
   height: 4px;
-  background-color: var(--color-bg-tertiary);
+  background: var(--color-border-light);
   border-radius: var(--radius-full);
   margin-bottom: var(--space-12);
   overflow: hidden;
@@ -18,10 +25,10 @@
 
 .progress-bar {
   height: 100%;
-  background-color: var(--color-brand-primary);
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--gradient-accent);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
 }
-
 .progress-bar.step-1 {
   width: 33.33%;
 }
@@ -32,76 +39,114 @@
   width: 100%;
 }
 
+/* Step container */
 .onboarding-step {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-xl);
 }
 
 .step-header {
   text-align: center;
+  margin-bottom: var(--space-8);
 }
 
 .step-icon {
   width: 48px;
   height: 48px;
-  color: var(--color-brand-primary);
+  color: var(--color-accent);
   margin-bottom: var(--space-4);
 }
 
 .step-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-2);
 }
 
 .step-header p {
-  font-size: 1.125rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
 }
 
+/* Persona grid */
 .persona-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
 .persona-card {
-  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
   text-align: center;
+  font-size: var(--font-size-sm);
   font-weight: 500;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
   cursor: pointer;
+  transition: all var(--transition-fast);
+  background: var(--color-bg-primary);
+}
+.persona-card:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+.persona-card--selected {
+  border-color: var(--color-accent) !important;
+  background: var(--color-accent-light) !important;
+  color: var(--color-accent-hover) !important;
+  box-shadow: 0 0 0 2px var(--color-accent-light);
 }
 
-.persona-card--selected {
-  border-color: var(--color-brand-primary);
-  background-color: rgba(37, 99, 235, 0.05);
-  color: var(--color-brand-primary);
+/* Inputs */
+.onboarding-input {
+  width: 100%;
 }
 
 .onboarding-textarea {
   width: 100%;
   padding: var(--space-4);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-md);
-  background-color: var(--color-bg-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
   color: var(--color-text-primary);
-  font-family: inherit;
-  font-size: 1rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
   resize: vertical;
-  transition: var(--transition-fast);
+  transition: all var(--transition-fast);
+  line-height: 1.6;
 }
-
+.onboarding-textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
 .onboarding-textarea:focus {
   outline: none;
-  border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-light);
+  background: var(--color-bg-primary);
 }
 
+/* Step footer */
 .step-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  margin-top: var(--space-8);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
+  .onboarding-step {
+    padding: var(--space-8) var(--space-6);
+  }
   .persona-grid {
     grid-template-columns: 1fr;
   }
