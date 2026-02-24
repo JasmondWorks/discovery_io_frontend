@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
 @import "./variables.css";
 
 *,
@@ -73,6 +73,14 @@ a:hover {
   color: var(--color-accent-hover);
 }
 
+/* ─── Accent Italic — Serif Highlight ─────────────────────────────── */
+
+.accent-italic {
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  font-weight: 500;
+}
+
 /* ─── Buttons (Base Reset) ────────────────────────────────────────── */
 
 button {
@@ -121,7 +129,7 @@ select:focus {
 
 ::selection {
   background-color: var(--color-accent-light);
-  color: var(--color-accent-hover);
+  color: var(--color-accent-dark);
 }
 
 /* ─── Utilities ───────────────────────────────────────────────────── */

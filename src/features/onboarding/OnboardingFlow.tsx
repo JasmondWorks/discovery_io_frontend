@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Container, Card, Button, Input } from "../../components/ui";
 import { User, Cpu, AlertCircle, ArrowRight, ArrowLeft } from "lucide-react";
@@ -62,6 +63,9 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
 
   return (
     <Container size="sm" className="onboarding-container">
+      <Link to="/" className="onboarding-home-link">
+        ← Back to home
+      </Link>
       <div className="onboarding-progress">
         <div className={`progress-bar step-${step}`} />
       </div>

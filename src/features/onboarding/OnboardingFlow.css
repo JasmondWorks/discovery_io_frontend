@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Onboarding Flow
+   Onboarding Flow — Sage Green Design
    ═══════════════════════════════════════════════════════════════════ */
 
 .onboarding-container {
@@ -8,18 +8,34 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-8);
+  padding: var(--space-6);
   background: var(--gradient-hero);
+  position: relative;
 }
 
-/* Progress bar */
+.onboarding-home-link {
+  position: absolute;
+  top: var(--space-6);
+  left: var(--space-6);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.onboarding-home-link:hover {
+  color: var(--color-accent);
+}
+
+/* ─── Progress Bar ────────────────────────────────────────────────── */
+
 .onboarding-progress {
   width: 100%;
   max-width: 480px;
   height: 4px;
   background: var(--color-border-light);
   border-radius: var(--radius-full);
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-10);
   overflow: hidden;
 }
 
@@ -27,27 +43,26 @@
   height: 100%;
   background: var(--gradient-accent);
   border-radius: var(--radius-full);
-  transition: width var(--transition-slow);
+  transition: width 0.4s ease;
 }
+
 .progress-bar.step-1 {
   width: 33.33%;
 }
+
 .progress-bar.step-2 {
   width: 66.66%;
 }
+
 .progress-bar.step-3 {
   width: 100%;
 }
 
-/* Step container */
+/* ─── Step ────────────────────────────────────────────────────────── */
+
 .onboarding-step {
   width: 100%;
   max-width: 480px;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-2xl);
-  padding: var(--space-10);
-  box-shadow: var(--shadow-xl);
 }
 
 .step-header {
@@ -59,22 +74,23 @@
   width: 48px;
   height: 48px;
   color: var(--color-accent);
-  margin-bottom: var(--space-4);
+  margin: 0 auto var(--space-4);
 }
 
 .step-header h1 {
   font-size: var(--font-size-2xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-weight: 700;
   margin-bottom: var(--space-2);
+  letter-spacing: -0.02em;
 }
 
 .step-header p {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-tertiary);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
 }
 
-/* Persona grid */
+/* ─── Persona Grid ────────────────────────────────────────────────── */
+
 .persona-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -85,30 +101,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-4) var(--space-3);
-  text-align: center;
+  padding: var(--space-4);
+  background: var(--color-bg-elevated);
+  border: 1.5px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
   font-size: var(--font-size-sm);
   font-weight: 500;
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-xl);
+  color: var(--color-text-primary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  background: var(--color-bg-primary);
-}
-.persona-card:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: var(--color-accent-subtle);
-}
-.persona-card--selected {
-  border-color: var(--color-accent) !important;
-  background: var(--color-accent-light) !important;
-  color: var(--color-accent-hover) !important;
-  box-shadow: 0 0 0 2px var(--color-accent-light);
 }
 
-/* Inputs */
+.persona-card:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.persona-card--selected {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+}
+
+/* ─── Inputs ──────────────────────────────────────────────────────── */
+
 .onboarding-input {
   width: 100%;
 }
@@ -116,37 +134,39 @@
 .onboarding-textarea {
   width: 100%;
   padding: var(--space-4);
-  font-family: var(--font-family);
   font-size: var(--font-size-base);
+  background: var(--color-bg-elevated);
+  border: 1.5px solid var(--color-border-primary);
+  border-radius: var(--radius-xl);
   color: var(--color-text-primary);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-lg);
   resize: vertical;
-  transition: all var(--transition-fast);
+  min-height: 120px;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
   line-height: 1.6;
 }
+
 .onboarding-textarea::placeholder {
   color: var(--color-text-tertiary);
 }
+
 .onboarding-textarea:focus {
-  outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-light);
-  background: var(--color-bg-primary);
+  box-shadow: 0 0 0 3px rgba(74, 103, 65, 0.12);
 }
 
-/* Step footer */
+/* ─── Step Footer ─────────────────────────────────────────────────── */
+
 .step-footer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin-top: var(--space-8);
 }
 
+/* ─── Responsive ──────────────────────────────────────────────────── */
+
 @media (max-width: 480px) {
-  .onboarding-step {
-    padding: var(--space-8) var(--space-6);
-  }
   .persona-grid {
     grid-template-columns: 1fr;
   }

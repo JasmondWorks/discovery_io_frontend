@@ -1,24 +1,19 @@
-/* ─── Card Component ──────────────────────────────────────────────── */
+/* ─── Card — Sage Green Design System ─────────────────────────────── */
 
 .card {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
-  box-shadow: var(--shadow-card);
   transition: all var(--transition-normal);
 }
 
 .card--hoverable {
   cursor: pointer;
 }
-.card--hoverable:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border-primary);
-  transform: translateY(-2px);
-}
 
-.card--selected {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px var(--color-accent-light);
+.card--hoverable:hover {
+  border-color: var(--color-border-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }

@@ -1,8 +1,8 @@
 Products Requirements Document (PRD).
 
-**Section 1: Purpose** 
+**Section 1: Purpose**
 
-[Discover.io](http://Discovery.io) Is a product that helps creatives find specific AI tools that fits their use cases.
+[Discover.io](http://Discover.io) Is a product that helps creatives find specific AI tools that fits their use cases.
 
 **Intro:**
 
@@ -16,15 +16,15 @@ Unlike Google and regular AI platforms that return generic results, our product 
 
 [Discover.io](http://Discovery.io) is for :
 
-- Designers  
-- Developers   
-- Writers   
-- Marketers and   
+- Designers
+- Developers
+- Writers
+- Marketers and
 - Online professionals
 
 **Why build it (problem statement)?**
 
- The AI ecosystem is crowded and constantly changing, making it difficult to know which tools are useful, reliable, or relevant to specific tasks. Creatives waste time searching and testing tools that don't fit their needs.
+The AI ecosystem is crowded and constantly changing, making it difficult to know which tools are useful, reliable, or relevant to specific tasks. Creatives waste time searching and testing tools that don't fit their needs.
 
 Users want AI tools to work faster and better, but discovery is broken. Generic search results don't account for workflow, role, or task specificity.
 
@@ -36,12 +36,12 @@ Discover.io changes this by providing tailored results to users. The platform fo
 
 The goal of Discover.io is to help creatives find specific, reliable tools with ease that help them to work more efficiently.
 
-**Section 2: Features and Functionalities** 
+**Section 2: Features and Functionalities**
 
 **Feature 1: Signup/Login**
 
-**User story 1.1:** As a first-time user, I want to sign up with my email, so that I can start exploring the product and save my search history.  
-    
+**User story 1.1:** As a first-time user, I want to sign up with my email, so that I can start exploring the product and save my search history.
+
 **User story 1.2**: As a returning user, I want to log in with my email and password, so that I can access my account and previous searches.
 
 **Problems been solved:**  
@@ -57,9 +57,9 @@ The goal of Discover.io is to help creatives find specific, reliable tools with 
 
 Example questions:
 
-* how do you describe yourself- (content writers, graphic designers, etc)- dropdown option  
-* what AI tools have you/do you use?  
-* what are the common problems you’ve faced with these tools?
+- how do you describe yourself- (content writers, graphic designers, etc)- dropdown option
+- what AI tools have you/do you use?
+- what are the common problems you’ve faced with these tools?
 
 **Feature 3: Skills Catalogue/Tools Catalogue**
 
@@ -71,14 +71,14 @@ Example:
 For graphic designers, here is a category of AI tools that works
 
 For mockups:  
-List 1-   
+List 1-  
 List 2- etc
 
 For copies:  
-List 1-   
+List 1-  
 List 2- etc
 
-**Feature 4 \- Search Input** 
+**Feature 4 \- Search Input**
 
 **User story:** As a user, I want to see a prominent search button on the landing page with placeholder text "Tell me what you need", so that I can describe my problem, task, or workflow and get relevant tool recommendations.
 
@@ -113,8 +113,8 @@ Rationale: This allows the user to correct specific parts of the understanding (
 System must generate a Comparative Leaderboard.  
 "The output must not just list tools, but compare them against the specific criteria listed below
 
-**Example Output**: "Here are 5 tools I've curated for you based on your request to handle SQL migrations”  
-   
+**Example Output**: "Here are 5 tools I've curated for you based on your request to handle SQL migrations”
+
 Each tool is ranked based on:  
 \- Usefulness to your task  
 \- Relevance to your specific workflow  
@@ -133,36 +133,36 @@ Why: You cannot recommend what you don't know.
 **Requirement**: "For MVP launch, the internal database must be seeded with a minimum of 50-100 high-quality, manually curated AI tools tagged with rich metadata (pricing, verified use cases, platform)."  
 **Constraint**: "The AI Agent must ONLY recommend tools present in our verified database to prevent hallucinations of non-existent tools."
 
-**Acceptance Criteria** 
+**Acceptance Criteria**
 
-***Scenario 1:*** User searches for tools
+**_Scenario 1:_** User searches for tools
 
 \- Given I click on the search button on the landing page  
 \- When I describe my problem/task  
 \- Then I should get a response that restates/clarifies my question to confirm the AI understands the problem
 
-***Scenario 2:*** User confirms understanding
+**_Scenario 2:_** User confirms understanding
 
 \- Given the system has restated my question  
 \- When I affirm its accuracy  
 \- Then it should continue the search process and present results
 
-\- Given the system has finished it's search 
+\- Given the system has finished it's search
 
-***Scenario 3:*** System presents recommendations
+**_Scenario 3:_** System presents recommendations
 
 \- Given the system has finished its search  
 \- When it presents the results  
 \- Then it should:
 
- \- State clearly the criteria used for ranking the tools  
+\- State clearly the criteria used for ranking the tools  
  \- List recommended tools with names and descriptions  
  \- Explain what each tool does and how to use it for my specific task  
  \- **NOT** present, just a list must include practical guidance.
 
-***Note:*** When presenting results, the system must explicitly state a 'Trade-off' or 'Limitation' for the top ranked tool to ensure balanced advice (e.g., 'Note: This tool has a steep learning curve').
+**_Note:_** When presenting results, the system must explicitly state a 'Trade-off' or 'Limitation' for the top ranked tool to ensure balanced advice (e.g., 'Note: This tool has a steep learning curve').
 
-**Section 3: Release Criteria** 
+**Section 3: Release Criteria**
 
 1\. Functionality (Must Have for Launch)
 
@@ -173,10 +173,10 @@ Why: You cannot recommend what you don't know.
 \- Tool recommendation engine returning relevant results based on user input  
 \- Results page displaying tools with:
 
-* Clear ranking criteria explanation  
-* Tool names and descriptions  
-* Practical guidance on how to use each tool  
-* Minimum 5 tools returned per search query
+- Clear ranking criteria explanation
+- Tool names and descriptions
+- Practical guidance on how to use each tool
+- Minimum 5 tools returned per search query
 
 2\. Usability (Must Have for Launch)  
 \- Landing page is clear and intuitive with prominent search button  

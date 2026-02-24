@@ -1,52 +1,41 @@
 import { useState, type FormEvent } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useNavigate, Link } from "react-router-dom";
 import "./AuthPages.css";
 
 export function LoginPage() {
-  const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Redirect back to where the user originally tried to go
-  const from =
-    (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/";
-
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    setLoading(true);
-    try {
-      await login(email, password);
-      navigate(from, { replace: true });
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error ? err.message : "Login failed. Please try again.",
-      );
-    } finally {
-      setLoading(false);
+
+    if (!email.trim() || !password.trim()) {
+      setError("Please fill in all fields.");
+      return;
     }
+
+    setLoading(true);
+    // Simulate brief loading then navigate
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/chat", { replace: true });
+    }, 600);
   }
 
   return (
     <div className="auth-page">
-      {/* Background blobs */}
-      <div className="auth-blob auth-blob--1" aria-hidden="true" />
-      <div className="auth-blob auth-blob--2" aria-hidden="true" />
+      <div className="auth-bg" aria-hidden="true" />
 
       <div className="auth-card">
-        {/* Logo */}
-        <div className="auth-logo">
-          <span className="auth-logo__icon">D</span>
-          <span className="auth-logo__text">
-            Discover<span>.io</span>
-          </span>
-        </div>
+        <Link to="/" className="auth-logo">
+          <span className="auth-logo__icon">✦</span>
+          <span className="auth-logo__text">Discover.io</span>
+        </Link>
 
         <h1 className="auth-heading">Welcome back</h1>
         <p className="auth-subheading">Sign in to continue to your account</p>
@@ -94,12 +83,20 @@ export function LoginPage() {
           </button>
         </form>
 
+        <Link to="/chat" className="auth-guest-link">
+          Continue as Guest →
+        </Link>
+
         <p className="auth-footer-text">
           Don&apos;t have an account?{" "}
           <Link to="/register" className="auth-link">
             Create one
           </Link>
         </p>
+
+        <Link to="/" className="auth-back-link">
+          ← Back to home
+        </Link>
       </div>
     </div>
   );

@@ -1,37 +1,41 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Chat Layout — Main Container
+   Chat Layout — Sage Green Design
    ═══════════════════════════════════════════════════════════════════ */
 
 .chat-layout {
   display: flex;
   height: 100vh;
-  position: relative;
-  background: var(--color-bg-chat);
   overflow: hidden;
+  background: var(--color-bg-chat);
+  position: relative;
 }
 
-/* Share Button — positioned above sidebar */
 .chat-share-btn {
-  position: fixed;
+  position: absolute;
   top: var(--space-4);
-  right: var(--space-6);
-  z-index: 100;
-  display: inline-flex;
+  right: var(--space-4);
+  z-index: 20;
+  display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-primary);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-full);
-  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-text-tertiary);
   transition: all var(--transition-fast);
+}
+
+.chat-share-btn:hover {
+  border-color: var(--color-border-primary);
+  color: var(--color-text-primary);
   box-shadow: var(--shadow-sm);
 }
-.chat-share-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  box-shadow: var(--shadow-md);
+
+@media (max-width: 768px) {
+  .chat-share-btn {
+    display: none;
+  }
 }

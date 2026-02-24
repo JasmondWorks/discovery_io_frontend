@@ -1,10 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
 import "./AuthPages.css";
 
 export function RegisterPage() {
-  const { register } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -13,36 +11,32 @@ export function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    setLoading(true);
-    try {
-      await register(name, email, password);
-      navigate("/", { replace: true });
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Registration failed. Please try again.",
-      );
-    } finally {
-      setLoading(false);
+
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError("Please fill in all fields.");
+      return;
     }
+
+    setLoading(true);
+    // Simulate brief loading then navigate to onboarding
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/onboarding", { replace: true });
+    }, 600);
   }
 
   return (
     <div className="auth-page">
-      <div className="auth-blob auth-blob--1" aria-hidden="true" />
-      <div className="auth-blob auth-blob--2" aria-hidden="true" />
+      <div className="auth-bg" aria-hidden="true" />
 
       <div className="auth-card">
-        <div className="auth-logo">
-          <span className="auth-logo__icon">D</span>
-          <span className="auth-logo__text">
-            Discover<span>.io</span>
-          </span>
-        </div>
+        <Link to="/" className="auth-logo">
+          <span className="auth-logo__icon">✦</span>
+          <span className="auth-logo__text">Discover.io</span>
+        </Link>
 
         <h1 className="auth-heading">Create your account</h1>
         <p className="auth-subheading">
@@ -116,6 +110,10 @@ export function RegisterPage() {
             Sign in
           </Link>
         </p>
+
+        <Link to="/" className="auth-back-link">
+          ← Back to home
+        </Link>
       </div>
     </div>
   );

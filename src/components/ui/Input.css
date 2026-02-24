@@ -1,39 +1,51 @@
-/* ─── Input Component ─────────────────────────────────────────────── */
+/* ─── Input — Sage Green Design System ────────────────────────────── */
 
-.input-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+.input-group {
+  width: 100%;
 }
 
-.input-wrapper label {
+.input-label {
+  display: block;
   font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
 }
 
 .input-field {
   width: 100%;
-  padding: var(--space-3) var(--space-4);
+  padding: 0.75rem 1rem;
   font-size: var(--font-size-base);
-  color: var(--color-text-primary);
   background: var(--color-bg-input);
-  border: 1px solid var(--color-border-primary);
+  border: 1.5px solid var(--color-border-primary);
   border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
   transition: all var(--transition-fast);
-  line-height: 1.5;
 }
 
 .input-field::placeholder {
   color: var(--color-text-tertiary);
 }
 
-.input-field:hover {
+.input-field:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(74, 103, 65, 0.12);
+}
+
+.input-field:hover:not(:focus) {
   border-color: var(--color-border-secondary);
 }
 
-.input-field:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-light);
+.input-field--error {
+  border-color: var(--color-error);
+}
+
+.input-field--error:focus {
+  box-shadow: 0 0 0 3px rgba(196, 64, 64, 0.12);
+}
+
+.input-error-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  margin-top: var(--space-1);
 }

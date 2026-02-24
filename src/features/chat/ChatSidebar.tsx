@@ -1,13 +1,13 @@
+import { Link, useLocation } from "react-router-dom";
 import {
   Plus,
   Search,
   MessageSquare,
+  Clock,
+  Home,
   Settings,
-  BookOpen,
-  User,
-  ChevronLeft,
-  ChevronRight,
-  Crown,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-react";
 import "./ChatSidebar.css";
 
@@ -31,95 +31,89 @@ export function ChatSidebar({
   onNewChat,
   chatHistory,
 }: ChatSidebarProps) {
+  const location = useLocation();
+
   return (
-    <>
-      <aside className={`chat-sidebar ${isOpen ? "open" : "collapsed"}`}>
-        <div className="sidebar__header">
-          <div className="sidebar__logo">
-            <span className="sidebar__logo-mark">D</span>
-            {isOpen && (
-              <span className="sidebar__logo-text">
-                Discover<span>.io</span>
-              </span>
-            )}
+    <aside
+      className={`chat-sidebar ${isOpen ? "" : "chat-sidebar--collapsed"}`}
+    >
+      {/* Toggle */}
+      <button
+        className="sidebar-toggle"
+        onClick={onToggle}
+        aria-label="Toggle sidebar"
+      >
+        {isOpen ? <PanelLeftClose size={18} /> : <PanelLeft size={18} />}
+      </button>
+
+      {isOpen && (
+        <>
+          {/* Logo */}
+          <div className="sidebar-logo">
+            <span className="sidebar-logo__icon">✦</span>
+            <span className="sidebar-logo__text">Discover.io</span>
           </div>
-          <button
-            className="sidebar__toggle"
-            onClick={onToggle}
-            aria-label="Toggle sidebar"
-          >
-            {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+
+          {/* New Chat */}
+          <button className="sidebar-new-chat" onClick={onNewChat}>
+            <Plus size={18} />
+            <span>New Chat</span>
           </button>
-        </div>
 
-        {isOpen && (
-          <div className="sidebar__content">
-            {/* New Search */}
-            <button className="sidebar__new-chat" onClick={onNewChat}>
-              <Plus size={18} />
-              <span>New Search</span>
-            </button>
+          {/* Navigation Links */}
+          <nav className="sidebar-nav">
+            <Link
+              to="/"
+              className={`sidebar-nav__link ${location.pathname === "/" ? "active" : ""}`}
+            >
+              <Home size={18} />
+              <span>Home</span>
+            </Link>
+            <Link
+              to="/chat"
+              className={`sidebar-nav__link ${location.pathname === "/chat" ? "active" : ""}`}
+            >
+              <MessageSquare size={18} />
+              <span>Chat</span>
+            </Link>
+            <Link
+              to="/onboarding"
+              className={`sidebar-nav__link ${location.pathname === "/onboarding" ? "active" : ""}`}
+            >
+              <Settings size={18} />
+              <span>Onboarding</span>
+            </Link>
+          </nav>
 
-            {/* Search previous chats */}
-            <div className="sidebar__search">
-              <Search size={16} />
-              <input type="text" placeholder="Search conversations..." />
+          {/* Chat History */}
+          <div className="sidebar-history">
+            <div className="sidebar-history__header">
+              <Clock size={14} />
+              <span>Recent Chats</span>
             </div>
-
-            {/* Chat history */}
-            <div className="sidebar__section">
-              <span className="sidebar__section-label">Recent</span>
-              <ul className="sidebar__chat-list">
-                {chatHistory.map((chat) => (
-                  <li key={chat.id} className="sidebar__chat-item">
-                    <MessageSquare size={16} />
-                    <div className="sidebar__chat-info">
-                      <span className="sidebar__chat-title">{chat.title}</span>
-                      <span className="sidebar__chat-date">{chat.date}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Bottom section */}
-            <div className="sidebar__bottom">
-              <button className="sidebar__menu-item">
-                <BookOpen size={18} />
-                <span>Tools Catalogue</span>
-              </button>
-              <button className="sidebar__menu-item">
-                <Settings size={18} />
-                <span>Settings</span>
-              </button>
-
-              {/* Profile & Plan */}
-              <div className="sidebar__profile">
-                <div className="sidebar__profile-avatar">
-                  <User size={18} />
-                </div>
-                <div className="sidebar__profile-info">
-                  <span className="sidebar__profile-name">User</span>
-                  <span className="sidebar__plan-badge">
-                    <Crown size={12} /> Free
-                  </span>
-                </div>
-              </div>
+            <div className="sidebar-history__list">
+              {chatHistory.map((session) => (
+                <button key={session.id} className="sidebar-history__item">
+                  <Search size={14} />
+                  <div className="history-item__content">
+                    <span className="history-item__title">{session.title}</span>
+                    <span className="history-item__date">{session.date}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
-        )}
-      </aside>
 
-      {/* Collapsed toggle button */}
-      {!isOpen && (
-        <button
-          className="sidebar__toggle-floating"
-          onClick={onToggle}
-          aria-label="Open sidebar"
-        >
-          <ChevronRight size={18} />
-        </button>
+          {/* User Menu */}
+          <div className="sidebar-user">
+            <div className="sidebar-user__avatar">U</div>
+            <div className="sidebar-user__info">
+              <span className="sidebar-user__name">User</span>
+              <span className="sidebar-user__email">user@example.com</span>
+            </div>
+          </div>
+        </>
       )}
-    </>
+    </aside>
   );
 }
