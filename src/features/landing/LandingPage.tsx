@@ -3,17 +3,15 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Sparkles,
-  Target,
-  BarChart3,
-  ArrowRight,
+  ArrowUpRight,
   Menu,
   X,
-  Zap,
-  Shield,
-  MessageSquare,
-  ArrowUpRight,
   ChevronDown,
 } from "lucide-react";
+import stickyNoteImg from "./assets/sticky-note.png";
+import remindersImg from "./assets/reminders.png";
+import tasksImg from "./assets/tasks.png";
+import integrationsImg from "./assets/integrations.png";
 import "./LandingPage.css";
 
 export function LandingPage() {
@@ -25,7 +23,14 @@ export function LandingPage() {
       <header className="landing-nav">
         <div className="landing-nav__inner">
           <Link to="/" className="landing-nav__logo">
-            <span className="logo-icon">✦</span>
+            <span className="logo-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <rect width="11" height="11" rx="3" fill="#1a1d2e" />
+                <rect x="15" width="11" height="11" rx="3" fill="#1a1d2e" />
+                <rect y="15" width="11" height="11" rx="3" fill="#1a1d2e" />
+                <circle cx="20.5" cy="20.5" r="4" fill="#2ec4b6" />
+              </svg>
+            </span>
             <span className="logo-wordmark">Discover.io</span>
           </Link>
 
@@ -33,11 +38,7 @@ export function LandingPage() {
             <a href="#hero" onClick={() => setMenuOpen(false)}>
               Home
             </a>
-            <a
-              href="#features"
-              className="nav-dropdown-trigger"
-              onClick={() => setMenuOpen(false)}
-            >
+            <a href="#features" className="nav-dropdown-trigger" onClick={() => setMenuOpen(false)}>
               Features <ChevronDown size={14} />
             </a>
             <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
@@ -83,6 +84,45 @@ export function LandingPage() {
       {/* ─── Hero ──────────────────────────────────────────── */}
       <section className="hero" id="hero">
         <div className="hero__bg" aria-hidden="true" />
+
+        {/* Floating cards around the hero */}
+        <motion.div
+          className="hero__float-card hero__float-card--sticky"
+          initial={{ opacity: 0, x: -60, y: 20 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <img src={stickyNoteImg} alt="Sticky notes" />
+        </motion.div>
+
+        <motion.div
+          className="hero__float-card hero__float-card--reminders"
+          initial={{ opacity: 0, x: 60, y: -20 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <img src={remindersImg} alt="Reminders widget" />
+        </motion.div>
+
+        <motion.div
+          className="hero__float-card hero__float-card--tasks"
+          initial={{ opacity: 0, x: -40, y: 40 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          <img src={tasksImg} alt="Today's tasks" />
+        </motion.div>
+
+        <motion.div
+          className="hero__float-card hero__float-card--integrations"
+          initial={{ opacity: 0, x: 40, y: 40 }}
+          animate={{ opacity: 1, x: 0, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
+        >
+          <img src={integrationsImg} alt="100+ integrations" />
+        </motion.div>
+
+        {/* Center content */}
         <div className="hero__content">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -90,6 +130,7 @@ export function LandingPage() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="hero__text"
           >
+            {/* Badge */}
             <div className="hero__badge">
               <Sparkles size={14} />
               <span>Discover AI Tools Smarter</span>
@@ -100,7 +141,7 @@ export function LandingPage() {
               <span className="hero__accent accent-italic">Discovery</span>,
               <br />
               Powered by{" "}
-              <span className="hero__accent accent-italic">Real Context</span>
+              <span className="hero__accent-light">Real Context</span>
             </h1>
 
             <p className="hero__subtitle">
@@ -116,72 +157,6 @@ export function LandingPage() {
               <a href="#how-it-works" className="hero__cta-secondary">
                 Learn More <ArrowUpRight size={16} />
               </a>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            className="hero__visual"
-          >
-            {/* Floating cards mockup */}
-            <div className="hero__cards-container">
-              <div className="hero__card hero__card--main">
-                <div className="mockup-phone">
-                  <div className="mockup-phone__notch" />
-                  <div className="mockup-phone__screen">
-                    <div className="mockup-phone__header">
-                      <Sparkles size={14} />
-                      <span>Discover.io</span>
-                    </div>
-                    <div className="mockup-phone__content">
-                      <div className="mockup-msg mockup-msg--user">
-                        I need an AI tool for social media content
-                      </div>
-                      <div className="mockup-msg mockup-msg--ai">
-                        <strong>Persona:</strong> Social Media Marketer
-                        <br />
-                        <strong>Task:</strong> Content Generation
-                        <br />
-                        <strong>Criteria:</strong> Brand-aligned, multi-platform
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="hero__card hero__card--stats">
-                <div className="stats-card">
-                  <div className="stats-card__header">
-                    <span>Tool Insights</span>
-                    <span className="stats-card__badge">Live</span>
-                  </div>
-                  <div className="stats-card__value">
-                    <span className="stats-number">50K</span>
-                    <span className="stats-change">+3.2% ↑</span>
-                  </div>
-                  <div className="stats-card__label">Tools Analyzed</div>
-                </div>
-              </div>
-              <div className="hero__card hero__card--social">
-                <div className="social-card">
-                  <div className="social-row">
-                    <span className="social-dot social-dot--green" />
-                    <span>Designers</span>
-                    <div className="social-bar" style={{ width: "85%" }} />
-                  </div>
-                  <div className="social-row">
-                    <span className="social-dot social-dot--dark" />
-                    <span>Developers</span>
-                    <div className="social-bar" style={{ width: "72%" }} />
-                  </div>
-                  <div className="social-row">
-                    <span className="social-dot social-dot--olive" />
-                    <span>Writers</span>
-                    <div className="social-bar" style={{ width: "68%" }} />
-                  </div>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
@@ -218,7 +193,8 @@ export function LandingPage() {
               <span>One AI Tool Discovery Hub</span>
             </div>
             <h2>
-              Everything You Need to <br />
+              Everything You Need to
+              <br />
               <span className="accent-italic">Find the Right Tools</span>
             </h2>
             <p>
@@ -230,37 +206,37 @@ export function LandingPage() {
           <div className="features__grid">
             {[
               {
-                icon: <MessageSquare size={24} />,
+                emoji: "💬",
                 title: "Natural Language Search",
                 description:
                   "Just describe your problem in plain English. Our AI understands context, not just keywords.",
               },
               {
-                icon: <Target size={24} />,
+                emoji: "🎯",
                 title: "Context-Driven Matching",
                 description:
                   "We diagnose your exact use case — your role, task, and success criteria — before recommending.",
               },
               {
-                icon: <BarChart3 size={24} />,
+                emoji: "📊",
                 title: "Ranked Recommendations",
                 description:
                   "Every tool is scored on usefulness, relevance, and reliability. No guesswork, just data.",
               },
               {
-                icon: <Shield size={24} />,
+                emoji: "🛡️",
                 title: "Verified & Curated",
                 description:
                   "We only recommend tools from our verified database. No hallucinated products, ever.",
               },
               {
-                icon: <Zap size={24} />,
+                emoji: "⚡",
                 title: "Built for Creatives",
                 description:
                   "Designers, developers, writers, marketers — we understand your specific workflows.",
               },
               {
-                icon: <Sparkles size={24} />,
+                emoji: "✨",
                 title: "Practical Guidance",
                 description:
                   "Don't just get a list — get actionable advice on how to use each tool for your task.",
@@ -274,7 +250,7 @@ export function LandingPage() {
                 transition={{ duration: 0.4, delay: i * 0.08 }}
                 className="feature-card"
               >
-                <div className="feature-card__icon">{feature.icon}</div>
+                <div className="feature-card__icon">{feature.emoji}</div>
                 <h3>{feature.title}</h3>
                 <p>{feature.description}</p>
               </motion.div>
@@ -306,7 +282,7 @@ export function LandingPage() {
               results to give you context-driven, personalized recommendations.
             </p>
             <Link to="/register" className="about-cta">
-              Explore More <ArrowUpRight size={16} />
+              Explore More →
             </Link>
           </motion.div>
           <motion.div
@@ -400,7 +376,7 @@ export function LandingPage() {
               your workflow.
             </p>
             <Link to="/register" className="hero__cta-primary">
-              Get Started — It's Free <ArrowRight size={18} />
+              Get Started — It's Free →
             </Link>
           </motion.div>
         </div>
@@ -411,7 +387,14 @@ export function LandingPage() {
         <div className="landing-footer__inner">
           <div className="landing-footer__brand">
             <div className="landing-nav__logo">
-              <span className="logo-icon">✦</span>
+              <span className="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                  <rect width="11" height="11" rx="3" fill="#1a1d2e" />
+                  <rect x="15" width="11" height="11" rx="3" fill="#1a1d2e" />
+                  <rect y="15" width="11" height="11" rx="3" fill="#1a1d2e" />
+                  <circle cx="20.5" cy="20.5" r="4" fill="#2ec4b6" />
+                </svg>
+              </span>
               <span className="logo-wordmark">Discover.io</span>
             </div>
             <p>
