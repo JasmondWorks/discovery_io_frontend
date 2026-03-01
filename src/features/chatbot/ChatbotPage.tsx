@@ -21,6 +21,7 @@ import {
   X,
   Home,
 } from "lucide-react";
+import { Logo } from "../../components/common/Logo";
 import "./ChatbotPage.css";
 
 interface ChatMessage {
@@ -242,10 +243,7 @@ export function ChatbotPage() {
       {/* ─── Top Navbar ─────────────────────────── */}
       <header className="chat-navbar">
         <div className="chat-navbar__inner">
-          <Link to="/" className="chat-navbar__logo">
-            <Sparkles size={20} className="chat-navbar__logo-icon" />
-            <span>Discover.io</span>
-          </Link>
+          <Logo className="chat-navbar__logo" size={20} />
 
           {/* Desktop Nav */}
           <nav className="chat-navbar__links">
@@ -261,10 +259,10 @@ export function ChatbotPage() {
               <Bookmark size={16} />
               <span>Saved</span>
             </a>
-            <a href="#" className="chat-navbar__link">
+            <Link to="/profile" className="chat-navbar__link">
               <User size={16} />
               <span>Profile</span>
-            </a>
+            </Link>
           </nav>
 
           <button
@@ -348,14 +346,14 @@ export function ChatbotPage() {
                   <Bookmark size={18} />
                   <span>Saved</span>
                 </a>
-                <a
-                  href="#"
+                <Link
+                  to="/profile"
                   className="chat-mobile-menu__link"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <User size={18} />
                   <span>Profile</span>
-                </a>
+                </Link>
               </nav>
 
               <div className="chat-mobile-menu__footer">
@@ -572,7 +570,7 @@ export function ChatbotPage() {
       </main>
 
       {/* ─── Mobile Bottom Nav ──────────────────── */}
-      <nav className="chat-bottom-nav">
+      {/* <nav className="chat-bottom-nav">
         <Link to="/chat" className="chat-bottom-nav__item active">
           <Search size={20} />
           <span>Discover</span>
@@ -589,7 +587,7 @@ export function ChatbotPage() {
           <User size={20} />
           <span>Profile</span>
         </a>
-      </nav>
+      </nav> */}
     </div>
   );
 }

@@ -11,10 +11,11 @@ import {
   X,
   SlidersHorizontal,
   Bookmark,
-  Sparkles,
   LayoutGrid,
   Home,
+  User,
 } from "lucide-react";
+import { Logo } from "../../components/common/Logo";
 import "./ToolsCatalogue.css";
 
 interface Tool {
@@ -245,16 +246,13 @@ export function ToolsCatalogue() {
       {/* ─── Navbar ─────────────────────────────────────────── */}
       <header className="catalogue-nav">
         <div className="catalogue-nav__inner">
-          <Link to="/" className="catalogue-nav__logo">
-            <Sparkles size={20} className="catalogue-logo-icon-svg" />
-            <span className="catalogue-logo-text">Discover.io</span>
-          </Link>
+          <Logo className="catalogue-nav__logo" size={20} />
 
           {/* Desktop nav */}
           <nav className="catalogue-nav__links">
-            <Link to="/">Home</Link>
             <Link to="/chat">Discover</Link>
             <Link to="/catalogue" className="active">Catalog</Link>
+            <Link to="/profile">Profile</Link>
           </nav>
 
           <div className="catalogue-nav__actions">
@@ -325,14 +323,14 @@ export function ToolsCatalogue() {
                   <LayoutGrid size={18} />
                   <span>Catalog</span>
                 </Link>
-                <a
-                  href="#"
+                <Link
+                  to="/profile"
                   className="catalogue-mobile-menu__link"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <Bookmark size={18} />
-                  <span>Saved</span>
-                </a>
+                  <User size={18} />
+                  <span>Profile</span>
+                </Link>
               </nav>
 
               <div className="catalogue-mobile-menu__footer">

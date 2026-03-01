@@ -15,6 +15,7 @@ import {
   FolderOpen,
   Search,
 } from "lucide-react";
+import { Logo } from "../../components/common/Logo";
 import chatMockupImg from "./assets/chat-mockup.png";
 import catalogImg from "./assets/catalog-illustration.png";
 import techBannerImg from "./assets/tech-banner.png";
@@ -28,21 +29,11 @@ export function LandingPage() {
       {/* ─── Navbar ─────────────────────────────────────────── */}
       <header className="landing-nav">
         <div className="landing-nav__inner">
-          <Link to="/" className="landing-nav__logo">
-            <span className="logo-icon">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <rect width="12" height="12" rx="3" fill="#4361EE" />
-                <rect x="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.6" />
-                <rect y="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.6" />
-                <rect x="14" y="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.3" />
-              </svg>
-            </span>
-            <span className="logo-wordmark">Discover.io</span>
-          </Link>
+          <Logo className="landing-nav__logo" size={28} />
 
           {/* Desktop nav links */}
           <nav className="landing-nav__links">
-            <a href="#hero">Find AI</a>
+            <a href="#hero">Features</a>
             <a href="#how-it-works">How It Works</a>
             <Link to="/catalogue">Catalog</Link>
           </nav>
@@ -102,7 +93,7 @@ export function LandingPage() {
                   onClick={() => setMenuOpen(false)}
                 >
                   <Search size={18} />
-                  <span>Find AI</span>
+                  <span>Features</span>
                 </a>
                 <a
                   href="#how-it-works"
@@ -417,17 +408,7 @@ export function LandingPage() {
       <footer className="landing-footer">
         <div className="landing-footer__inner">
           <div className="landing-footer__brand">
-            <Link to="/" className="landing-nav__logo">
-              <span className="logo-icon">
-                <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-                  <rect width="12" height="12" rx="3" fill="#4361EE" />
-                  <rect x="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.6" />
-                  <rect y="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.6" />
-                  <rect x="14" y="14" width="12" height="12" rx="3" fill="#4361EE" opacity="0.3" />
-                </svg>
-              </span>
-              <span className="logo-wordmark">Discover.io</span>
-            </Link>
+            <Logo className="landing-nav__logo" size={22} />
           </div>
           <p className="landing-footer__copy">
             &copy; 2026 Discover.io. All rights reserved.

@@ -25,17 +25,17 @@
 .auth-logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 32px;
   text-decoration: none;
-  color: #1e293b;
 }
 
-.auth-logo__icon {
-  color: #4361ee;
+.auth-logo .logo-icon {
+  display: flex;
+  align-items: center;
 }
 
-.auth-logo__text {
+.auth-logo .logo-wordmark {
   font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.04em;
