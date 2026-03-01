@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
+import { Logo } from "../../components/common/Logo";
 import "./AuthPages.css";
 
 export function RegisterPage() {
@@ -31,10 +31,7 @@ export function RegisterPage() {
   return (
     <div className="auth-page">
       {/* Logo */}
-      <Link to="/" className="auth-logo">
-        <Sparkles size={24} className="auth-logo__icon" />
-        <span className="auth-logo__text">Discover.io</span>
-      </Link>
+      <Logo className="auth-logo" size={24} />
 
       {/* Card */}
       <div className="auth-card">
