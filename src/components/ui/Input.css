@@ -2,6 +2,7 @@
 
 .input-group {
   width: 100%;
+  position: relative;
 }
 
 .input-label {
@@ -48,4 +49,15 @@
   font-size: var(--font-size-xs);
   color: var(--color-error);
   margin-top: var(--space-1);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
 }

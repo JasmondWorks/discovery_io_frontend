@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Logo } from "../../components/common/Logo";
 import "./AuthPages.css";
+import { Input } from "@/components/ui";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  console.log(email);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -36,7 +39,6 @@ export function LoginPage() {
       <div className="auth-card">
         <h1 className="auth-heading">Welcome back</h1>
         <p className="auth-subheading">Sign in to continue your discovery.</p>
-
         {error && (
           <div className="auth-error" role="alert">
             {error}
@@ -58,8 +60,7 @@ export function LoginPage() {
           </div>
 
           <div className="auth-field">
-            <label htmlFor="login-password">Password</label>
-            <input
+            <Input
               id="login-password"
               type="password"
               autoComplete="current-password"
@@ -67,6 +68,7 @@ export function LoginPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              error=""
             />
           </div>
 
@@ -79,7 +81,6 @@ export function LoginPage() {
             {loading ? <span className="auth-btn__spinner" /> : "Sign In"}
           </button>
         </form>
-
         <p className="auth-footer-text">
           Don&apos;t have an account?{" "}
           <Link to="/register" className="auth-link">
