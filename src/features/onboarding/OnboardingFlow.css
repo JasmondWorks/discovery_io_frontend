@@ -194,3 +194,24 @@
   }
 
 }
+@media (max-width: 480px) {
+
+  .onboarding-container {
+    padding: 30px 16px;
+  }
+
+  .step-header h1 {
+    font-size: 20px;
+  }
+
+  .option-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .option-card {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+}
