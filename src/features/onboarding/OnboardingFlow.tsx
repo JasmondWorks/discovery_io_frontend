@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Container, Card, Button, Input } from "../../components/ui";
-import { User, Cpu, AlertCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { Container, Card, Button } from "../../components/ui";
+import { ArrowRight } from "lucide-react";
 import "./OnboardingFlow.css";
 
 interface OnboardingData {
-  persona: string;
-  tools: string;
-  problems: string;
+  role: string;
+  work: string;
+  goals: string[];
 }
 
 interface OnboardingFlowProps {
@@ -19,46 +19,92 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   onComplete,
 }) => {
   const [step, setStep] = useState(1);
+
   const [formData, setFormData] = useState<OnboardingData>({
-    persona: "",
-    tools: "",
-    problems: "",
+    role: "",
+    work: "",
+    goals: [],
   });
 
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => setStep((prev) => prev - 1);
+  /* OPTIONS */
 
-  const personaOptions = [
-    "Content Writer",
-    "Graphic Designer",
-    "Software Developer",
-    "Digital Marketer",
+  const roleOptions = [
+    "Designer",
+    "Developer",
+    "Writer",
+    "Marketer",
     "Product Manager",
+    "Entrepreneur",
+    "Student",
     "Other",
   ];
 
-  const handlePersonaSelect = (persona: string) => {
-    setFormData({ ...formData, persona });
-    nextStep();
+  const workOptions = [
+    "Content Creation",
+    "Web Development",
+    "Graphic Design",
+    "Data Analysis",
+    "Marketing Campaigns",
+    "Video Production",
+    "Copywriting",
+    "Project Management",
+  ];
+
+  const goalOptions = [
+    "Save time on repetitive tasks",
+    "Improve quality of output",
+    "Learn new skills faster",
+    "Automate workflows",
+    "Generate creative ideas",
+    "Analyze data better",
+    "Scale my business",
+    "Stay competitive",
+  ];
+
+  /* ACTIONS */
+
+  const nextStep = () => setStep((prev) => prev + 1);
+
+  const skipStep = () => {
+    if (step === 3) {
+      onComplete(formData);
+    } else {
+      nextStep();
+    }
+  };
+
+  const selectRole = (role: string) => {
+    setFormData({ ...formData, role });
+  };
+
+  const selectWork = (work: string) => {
+    setFormData({ ...formData, work });
+  };
+
+  const toggleGoal = (goal: string) => {
+    if (formData.goals.includes(goal)) {
+      setFormData({
+        ...formData,
+        goals: formData.goals.filter((g) => g !== goal),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        goals: [...formData.goals, goal],
+      });
+    }
   };
 
   const handleComplete = () => {
     onComplete(formData);
   };
 
+  /* ANIMATION */
+
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 50 : -50,
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? 50 : -50,
-      opacity: 0,
-    }),
+    enter: { x: 40, opacity: 0 },
+    center: { x: 0, opacity: 1 },
+    exit: { x: -40, opacity: 0 },
   };
 
   return (
@@ -66,15 +112,20 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
       <Link to="/" className="onboarding-home-link">
         ← Back to home
       </Link>
+
+      <div className="onboarding-logo">✨ Discover.io</div>
+
       <div className="onboarding-progress">
         <div className={`progress-bar step-${step}`} />
       </div>
 
-      <AnimatePresence mode="wait" custom={step}>
+      <AnimatePresence mode="wait">
+
+        {/* STEP 1 */}
+
         {step === 1 && (
           <motion.div
             key="step1"
-            custom={step}
             variants={variants}
             initial="enter"
             animate="center"
@@ -82,29 +133,46 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
             className="onboarding-step"
           >
             <div className="step-header">
-              <User className="step-icon" />
-              <h1>How do you describe yourself?</h1>
-              <p>We'll tailor your experience based on your role.</p>
+              <p className="step-label">QUESTION 1 OF 3</p>
+              <h1>What best describes your role?</h1>
             </div>
-            <div className="persona-grid">
-              {personaOptions.map((option) => (
+
+            <div className="option-grid">
+              {roleOptions.map((role) => (
                 <Card
-                  key={option}
+                  key={role}
                   hoverable
-                  className={`persona-card ${formData.persona === option ? "persona-card--selected" : ""}`}
-                  onClick={() => handlePersonaSelect(option)}
+                  className={`option-card ${
+                    formData.role === role ? "option-card--selected" : ""
+                  }`}
+                  onClick={() => selectRole(role)}
                 >
-                  <span>{option}</span>
+                  {role}
                 </Card>
               ))}
             </div>
+
+            <div className="step-footer">
+              <span className="skip-link" onClick={skipStep}>
+                Skip for now
+              </span>
+
+              <Button
+                variant="primary"
+                onClick={nextStep}
+                disabled={!formData.role}
+              >
+                Next <ArrowRight size={18} />
+              </Button>
+            </div>
           </motion.div>
         )}
+
+        {/* STEP 2 */}
 
         {step === 2 && (
           <motion.div
             key="step2"
-            custom={step}
             variants={variants}
             initial="enter"
             animate="center"
@@ -112,38 +180,46 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
             className="onboarding-step"
           >
             <div className="step-header">
-              <Cpu className="step-icon" />
-              <h1>What AI tools do you use?</h1>
-              <p>List any tools you currently use in your workflow.</p>
+              <p className="step-label">QUESTION 2 OF 3</p>
+              <h1>What do you primarily work on?</h1>
             </div>
-            <Input
-              placeholder="e.g. ChatGPT, Midjourney, Claude..."
-              value={formData.tools}
-              onChange={(e) =>
-                setFormData({ ...formData, tools: e.target.value })
-              }
-              className="onboarding-input"
-              autoFocus
-            />
+
+            <div className="option-grid">
+              {workOptions.map((work) => (
+                <Card
+                  key={work}
+                  hoverable
+                  className={`option-card ${
+                    formData.work === work ? "option-card--selected" : ""
+                  }`}
+                  onClick={() => selectWork(work)}
+                >
+                  {work}
+                </Card>
+              ))}
+            </div>
+
             <div className="step-footer">
-              <Button variant="ghost" onClick={prevStep}>
-                <ArrowLeft size={18} /> Back
-              </Button>
+              <span className="skip-link" onClick={skipStep}>
+                Skip for now
+              </span>
+
               <Button
                 variant="primary"
                 onClick={nextStep}
-                disabled={!formData.tools.trim()}
+                disabled={!formData.work}
               >
-                Continue <ArrowRight size={18} />
+                Next <ArrowRight size={18} />
               </Button>
             </div>
           </motion.div>
         )}
 
+        {/* STEP 3 */}
+
         {step === 3 && (
           <motion.div
             key="step3"
-            custom={step}
             variants={variants}
             initial="enter"
             animate="center"
@@ -151,34 +227,43 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
             className="onboarding-step"
           >
             <div className="step-header">
-              <AlertCircle className="step-icon" />
-              <h1>Common problems you face?</h1>
-              <p>Tell us what's holding you back with your current tools.</p>
+              <p className="step-label">QUESTION 3 OF 3</p>
+              <h1>What's your main goal with AI tools?</h1>
             </div>
-            <textarea
-              className="onboarding-textarea"
-              placeholder="Finding it hard to get consistent results..."
-              value={formData.problems}
-              onChange={(e) =>
-                setFormData({ ...formData, problems: e.target.value })
-              }
-              rows={4}
-              autoFocus
-            />
+
+            <div className="option-grid">
+              {goalOptions.map((goal) => (
+                <Card
+                  key={goal}
+                  hoverable
+                  className={`option-card ${
+                    formData.goals.includes(goal)
+                      ? "option-card--selected"
+                      : ""
+                  }`}
+                  onClick={() => toggleGoal(goal)}
+                >
+                  {goal}
+                </Card>
+              ))}
+            </div>
+
             <div className="step-footer">
-              <Button variant="ghost" onClick={prevStep}>
-                <ArrowLeft size={18} /> Back
-              </Button>
+              <span className="skip-link" onClick={skipStep}>
+                Skip for now
+              </span>
+
               <Button
                 variant="primary"
                 onClick={handleComplete}
-                disabled={!formData.problems.trim()}
+                disabled={formData.goals.length === 0}
               >
-                Complete Onboarding <ArrowRight size={18} />
+                Get Started <ArrowRight size={18} />
               </Button>
             </div>
           </motion.div>
         )}
+
       </AnimatePresence>
     </Container>
   );
