@@ -133,46 +133,82 @@ axiosInstance.interceptors.request.use((config) => {
 //   3. If refresh fails, clear auth and redirect to /login
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Auto-unwrap JSend or status-based responses:
+    // { status: "success", data: ... } or { success: true, data: ... } or { statusCode: 200, data: ... }
+    if (
+      response.data &&
+      (response.data.status === "success" ||
+        response.data.success === true ||
+        response.data.statusCode === 200) &&
+      response.data.data !== undefined
+    ) {
+      response.data = response.data.data;
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest: ExtendedConfig = error.config;
 
+    const url = originalRequest.url || "";
     const is401 = error.response?.status === 401;
+    const isJwtExpired =
+      error.response?.data?.message === "jwt expired" ||
+      error.response?.data?.error?.message === "jwt expired" ||
+      error.response?.data?.name === "TokenExpiredError" ||
+      error.response?.data?.error?.name === "TokenExpiredError";
+
     const notAlreadyRetried = !originalRequest._retry;
-    const notRefreshEndpoint = !originalRequest.url?.includes("/auth/refresh");
 
-    if (is401 && notAlreadyRetried && notRefreshEndpoint) {
-      originalRequest._retry = true;
+    // Do not attempt token refresh for auth endpoints where 401/expired means invalid credentials
+    const isAuthEndpointThatShouldNotRefresh =
+      url.includes("/auth/refresh") ||
+      url.includes("/auth/login") ||
+      url.includes("/auth/register");
 
-      try {
-        // Call refresh directly on axiosInstance to avoid recursive interceptor loop
-        const { data } = await axiosInstance.post<{ accessToken: string }>(
-          "/auth/refresh",
-          {},
-          { _retry: true } as ExtendedConfig,
-        );
+    if (is401 || isJwtExpired) {
+      if (notAlreadyRetried && !isAuthEndpointThatShouldNotRefresh) {
+        originalRequest._retry = true;
 
-        const newToken = data.accessToken;
+        try {
+          // Call refresh directly on axiosInstance to avoid recursive interceptor loop
+          const { data } = await axiosInstance.post<{ accessToken: string }>(
+            "/auth/refresh",
+            {},
+            { _retry: true } as ExtendedConfig,
+          );
 
-        // Update the ref so subsequent requests use the new token
-        if (_getAccessToken && originalRequest.headers) {
-          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          const newToken = data.accessToken;
+
+          // Update the ref so subsequent requests use the new token
+          if (_getAccessToken && originalRequest.headers) {
+            originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          }
+
+          // Notify AuthContext about the new token
+          window.dispatchEvent(
+            new CustomEvent("auth:tokenRefreshed", {
+              detail: { accessToken: newToken },
+            }),
+          );
+
+          return axiosInstance(originalRequest);
+        } catch (refreshError) {
+          _clearAuth?.();
+          _navigateToLogin?.();
+          return Promise.reject(refreshError);
         }
-
-        // Notify AuthContext about the new token
-        // We do this via a custom event to avoid a circular import
-        window.dispatchEvent(
-          new CustomEvent("auth:tokenRefreshed", {
-            detail: { accessToken: newToken },
-          }),
-        );
-
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
+      } else {
+        // Token is expired but we've either already retried or this IS the auth endpoint.
+        // We must log out and redirect to login.
         _clearAuth?.();
         _navigateToLogin?.();
-        return Promise.reject(refreshError);
       }
+    }
+
+    // Centrally unmask backend error messages so all hooks/components get the correct string
+    if (error.response?.data?.message) {
+      error.message = error.response.data.message;
     }
 
     return Promise.reject(error);
