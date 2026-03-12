@@ -1,32 +1,70 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Logo } from "../../components/common/Logo";
 import "./AuthPages.css";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useRegister } from "./hooks/useRegister";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
+
+const registerSchema = z
+  .object({
+    name: z.string().min(3, "Name must be at least 3 characters long"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    confirmPassword: z
+      .string()
+      .min(8, "Confirm Password must be at least 8 characters long"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type RegisterSchema = z.infer<typeof registerSchema>;
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const { handleRegister, isRegisterPending } = useRegister();
+  const { setAuth } = useAuth();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const form = useForm<RegisterSchema>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    // resolver: zodResolver(registerSchema),
+  });
+
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  const handleSubmit = form.handleSubmit(async (data) => {
     setError(null);
+    try {
+      const registerRes = await handleRegister(
+        data.name,
+        data.email,
+        data.password,
+      );
 
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      setError("Please fill in all fields.");
-      return;
+      // registerRes already contains the full user — no extra getMe call needed
+      const user = registerRes.user;
+      setAuth(user, registerRes.accessToken);
+
+      toast.success("Account created successfully!");
+
+      if (!user.onboardingCompleted) {
+        navigate("/onboarding", { replace: true });
+      } else {
+        navigate("/chat", { replace: true });
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to register.");
     }
-
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/onboarding", { replace: true });
-    }, 600);
-  }
+  });
 
   return (
     <div className="auth-page">
@@ -55,8 +93,7 @@ export function RegisterPage() {
               autoComplete="name"
               required
               placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              {...form.register("name")}
             />
           </div>
 
@@ -68,8 +105,7 @@ export function RegisterPage() {
               autoComplete="email"
               required
               placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...form.register("email")}
             />
           </div>
 
@@ -82,18 +118,30 @@ export function RegisterPage() {
               required
               minLength={8}
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...form.register("password")}
+            />
+          </div>
+
+          <div className="auth-field">
+            <label htmlFor="register-confirm-password">Confirm Password</label>
+            <input
+              id="register-confirm-password"
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              placeholder="••••••••"
+              {...form.register("confirmPassword")}
             />
           </div>
 
           <button
             type="submit"
             className="auth-btn"
-            disabled={loading}
+            disabled={isRegisterPending}
             id="register-submit-btn"
           >
-            {loading ? (
+            {isRegisterPending ? (
               <span className="auth-btn__spinner" />
             ) : (
               "Create Account"

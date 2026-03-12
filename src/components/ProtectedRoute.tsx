@@ -1,45 +1,37 @@
-/**
- * ProtectedRoute.tsx
- *
- * Wraps any route that requires authentication.
- *
- * While auth state is loading   → renders a spinner
- * If not authenticated          → redirects to /login
- * If authenticated              → renders the child route
- */
-
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import "./ProtectedRoute.css";
+import { useAuth } from "../context/AuthContext";
+import type { Role } from "../constants/roles";
+import { LoadingSpinner } from "./ui";
+import "./ProtectedRoute.css"; // Added CSS import
 
-interface Props {
-  /** Optionally restrict to specific roles, e.g. ["ADMIN", "SUPER_ADMIN"] */
-  roles?: string[];
+interface ProtectedRouteProps {
+  allowedRoles?: Role[];
 }
 
-export function ProtectedRoute({ roles }: Props) {
-  const { authenticated, loading, user } = useAuth();
+export function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
+  const { user, isInitialised } = useAuth();
   const location = useLocation();
 
-  if (loading) {
-    return (
-      <div className="auth-loading" role="status" aria-label="Checking session">
-        <span className="auth-spinner" />
-        <p>Verifying session…</p>
-      </div>
-    );
+  // While the silent refresh is in-flight, render nothing (or a spinner)
+  if (!isInitialised) {
+    return <LoadingSpinner fullPage />;
   }
 
-  if (!authenticated) {
-    // Preserve the intended destination so we can redirect back after login
+  if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Role-based guard (optional)
-  if (roles && user && !roles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />;
+  // If authenticated but onboarding not yet completed, redirect to /onboarding
+  if (
+    user.onboardingCompleted === false &&
+    location.pathname !== "/onboarding"
+  ) {
+    return <Navigate to="/onboarding" replace />;
   }
 
-  // All checks passed — render children
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" replace />; // Changed from unauthorized to /
+  }
+
   return <Outlet />;
 }

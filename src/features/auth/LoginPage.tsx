@@ -1,31 +1,55 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Logo } from "../../components/common/Logo";
 import "./AuthPages.css";
+import { Input } from "@/components/ui";
+import { useLogin } from "./hooks/useLogin";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
+
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const form = useForm<LoginSchema>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { setAuth } = useAuth();
+  const { handleLogin, isLoginPending } = useLogin();
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  const handleSubmit = form.handleSubmit(async (data) => {
     setError(null);
+    try {
+      const loginRes = await handleLogin(data.email, data.password);
 
-    if (!email.trim() || !password.trim()) {
-      setError("Please fill in all fields.");
-      return;
+      // loginRes already contains the full user object — no extra getMe needed
+      const user = loginRes.user;
+      setAuth(user, loginRes.accessToken);
+
+      toast.success("Welcome back!");
+
+      if (!user.onboardingCompleted) {
+        navigate("/onboarding", { replace: true });
+      } else {
+        navigate("/chat", { replace: true });
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to log in.");
     }
-
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/chat", { replace: true });
-    }, 600);
-  }
+  });
 
   return (
     <div className="auth-page">
@@ -36,7 +60,6 @@ export function LoginPage() {
       <div className="auth-card">
         <h1 className="auth-heading">Welcome back</h1>
         <p className="auth-subheading">Sign in to continue your discovery.</p>
-
         {error && (
           <div className="auth-error" role="alert">
             {error}
@@ -52,34 +75,36 @@ export function LoginPage() {
               autoComplete="email"
               required
               placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...form.register("email")}
             />
           </div>
 
           <div className="auth-field">
             <label htmlFor="login-password">Password</label>
-            <input
+            <Input
               id="login-password"
               type="password"
               autoComplete="current-password"
               required
               placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              error=""
+              {...form.register("password")}
             />
           </div>
 
           <button
             type="submit"
             className="auth-btn"
-            disabled={loading}
+            disabled={isLoginPending}
             id="login-submit-btn"
           >
-            {loading ? <span className="auth-btn__spinner" /> : "Sign In"}
+            {isLoginPending ? (
+              <span className="auth-btn__spinner" />
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
-
         <p className="auth-footer-text">
           Don&apos;t have an account?{" "}
           <Link to="/register" className="auth-link">
