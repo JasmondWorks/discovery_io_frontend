@@ -1,9 +1,12 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Logo } from "../../components/common/Logo";
 import "./AuthPages.css";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRegister } from "./hooks/useRegister";
+import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 
 const registerSchema = z
   .object({
@@ -23,6 +26,8 @@ type RegisterSchema = z.infer<typeof registerSchema>;
 
 export function RegisterPage() {
   const navigate = useNavigate();
+  const { handleRegister, isRegisterPending } = useRegister();
+  const { setAuth } = useAuth();
 
   const form = useForm<RegisterSchema>({
     defaultValues: {
@@ -31,26 +36,35 @@ export function RegisterPage() {
       password: "",
       confirmPassword: "",
     },
-
     // resolver: zodResolver(registerSchema),
   });
-  console.log(form.getValues("name"));
 
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  const handleSubmit = form.handleSubmit(async (data) => {
     setError(null);
-    console.log(form.getValues());
+    try {
+      const registerRes = await handleRegister(
+        data.name,
+        data.email,
+        data.password,
+      );
 
-    return;
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/onboarding", { replace: true });
-    }, 600);
-  }
+      // registerRes already contains the full user — no extra getMe call needed
+      const user = registerRes.user;
+      setAuth(user, registerRes.accessToken);
+
+      toast.success("Account created successfully!");
+
+      if (!user.onboardingCompleted) {
+        navigate("/onboarding", { replace: true });
+      } else {
+        navigate("/chat", { replace: true });
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to register.");
+    }
+  });
 
   return (
     <div className="auth-page">
@@ -124,10 +138,10 @@ export function RegisterPage() {
           <button
             type="submit"
             className="auth-btn"
-            disabled={loading}
+            disabled={isRegisterPending}
             id="register-submit-btn"
           >
-            {loading ? (
+            {isRegisterPending ? (
               <span className="auth-btn__spinner" />
             ) : (
               "Create Account"

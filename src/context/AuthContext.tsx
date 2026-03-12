@@ -14,6 +14,8 @@ export interface AuthUser {
   email: string;
   name: string;
   role: Role;
+  professionalProfile?: any;
+  onboardingCompleted?: boolean;
 }
 
 interface AuthState {
@@ -50,6 +52,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clearAuth = useCallback(() => {
     accessTokenRef.current = null;
     setAuthState({ user: null, accessToken: null, isInitialised: true });
+
+    // Manually clear any non-httpOnly cookies that might be lingering
+    document.cookie =
+      "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }, []);
 
   // Silent refresh on mount — restores session from httpOnly cookie
