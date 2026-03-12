@@ -33,7 +33,11 @@
           },
           "role": {
             "type": "string",
-            "enum": ["user", "admin", "super-admin"]
+            "enum": [
+              "USER",
+              "ADMIN",
+              "SUPER_ADMIN"
+            ]
           },
           "active": {
             "type": "boolean"
@@ -42,13 +46,34 @@
             "type": "object",
             "properties": {
               "industry": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "software_development",
+                  "design",
+                  "marketing",
+                  "content_creation",
+                  "other"
+                ]
               },
               "core_role": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "software_engineer",
+                  "graphic_designer",
+                  "content_writer",
+                  "product_manager",
+                  "marketer",
+                  "other"
+                ]
               },
               "experience_level": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "beginner",
+                  "intermediate",
+                  "advanced",
+                  "expert"
+                ]
               },
               "key_skills": {
                 "type": "array",
@@ -155,7 +180,11 @@
           },
           "complexity": {
             "type": "string",
-            "enum": ["Beginner", "Intermediate", "Advanced"]
+            "enum": [
+              "Beginner",
+              "Intermediate",
+              "Advanced"
+            ]
           },
           "use_cases": {
             "type": "array",
@@ -212,6 +241,102 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "Bookmark": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "tool_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "tool_name": {
+            "type": "string"
+          },
+          "tool_description": {
+            "type": "string"
+          },
+          "tool_url": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatMessage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "chat_session_id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "system"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/components/schemas/ExpertAdvice"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ChatIntent": {
+        "type": "object",
+        "properties": {
+          "user_persona": {
+            "type": "string"
+          },
+          "core_task": {
+            "type": "string"
+          },
+          "success_criteria": {
+            "type": "string"
+          },
+          "is_clarification_needed": {
+            "type": "boolean"
           }
         }
       },
@@ -303,17 +428,36 @@
     }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check endpoint",
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "Server is up and running"
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "summary": "Register a new user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "email", "password"],
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
                 "properties": {
                   "name": {
                     "type": "string"
@@ -350,14 +494,19 @@
     "/auth/login": {
       "post": {
         "summary": "Log in a user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["email", "password"],
+                "required": [
+                  "email",
+                  "password"
+                ],
                 "properties": {
                   "email": {
                     "type": "string"
@@ -390,7 +539,9 @@
     "/auth/refresh": {
       "post": {
         "summary": "Refresh access token",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Token refreshed successfully",
@@ -411,7 +562,9 @@
     "/auth/logout": {
       "post": {
         "summary": "Log out current user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "responses": {
           "200": {
             "description": "Logged out successfully"
@@ -422,7 +575,9 @@
     "/auth/me": {
       "get": {
         "summary": "Get current authenticated user",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "description": "Returns the current user if a valid accessToken cookie is present. Used by the frontend to check authentication status.",
         "responses": {
           "200": {
@@ -444,7 +599,9 @@
     "/bookmarks": {
       "post": {
         "summary": "Save a recommended tool to user's bookmarks",
-        "tags": ["Bookmarks"],
+        "tags": [
+          "Bookmarks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -456,7 +613,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["tool_name", "tool_description", "tool_url"],
+                "required": [
+                  "tool_name",
+                  "tool_description",
+                  "tool_url"
+                ],
                 "properties": {
                   "tool_name": {
                     "type": "string"
@@ -484,7 +645,9 @@
       },
       "get": {
         "summary": "Get all saved tools/bookmarks for the authenticated user",
-        "tags": ["Bookmarks"],
+        "tags": [
+          "Bookmarks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -516,7 +679,9 @@
     "/bookmarks/{id}": {
       "delete": {
         "summary": "Remove a saved tool from bookmarks",
-        "tags": ["Bookmarks"],
+        "tags": [
+          "Bookmarks"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -542,7 +707,9 @@
     "/chats": {
       "post": {
         "summary": "Create a new chat session",
-        "tags": ["Chats"],
+        "tags": [
+          "Chats"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -571,7 +738,9 @@
       },
       "get": {
         "summary": "Get user's chat sessions (history)",
-        "tags": ["Chats"],
+        "tags": [
+          "Chats"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -604,7 +773,9 @@
     "/chats/{id}/messages": {
       "get": {
         "summary": "Get all messages from a specific chat session",
-        "tags": ["Chats"],
+        "tags": [
+          "Chats"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -628,7 +799,9 @@
       },
       "post": {
         "summary": "Add a new message to an existing chat and get AI response",
-        "tags": ["Chats"],
+        "tags": [
+          "Chats"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -650,7 +823,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["content"],
+                "required": [
+                  "content"
+                ],
                 "properties": {
                   "content": {
                     "type": "string",
@@ -671,7 +846,9 @@
     "/media/upload": {
       "post": {
         "summary": "Upload a media file to Cloudinary",
-        "tags": ["Media"],
+        "tags": [
+          "Media"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -711,7 +888,9 @@
     "/normalize": {
       "post": {
         "summary": "Normalize open-ended input into a backend-defined structure",
-        "tags": ["Normalization"],
+        "tags": [
+          "Normalization"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -723,7 +902,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["input", "schemaType"],
+                "required": [
+                  "input",
+                  "schemaType"
+                ],
                 "properties": {
                   "input": {
                     "type": "string",
@@ -783,7 +965,9 @@
       "post": {
         "summary": "Specialized endpoint for occupational context normalization",
         "description": "Automatically uses the 'professional_profile' schema to capture full context of a user's work.",
-        "tags": ["Normalization"],
+        "tags": [
+          "Normalization"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -795,7 +979,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["input"],
+                "required": [
+                  "input"
+                ],
                 "properties": {
                   "input": {
                     "type": "string",
@@ -885,7 +1071,9 @@
     "/solutions": {
       "get": {
         "summary": "Retrieve a list of all solutions",
-        "tags": ["Solutions"],
+        "tags": [
+          "Solutions"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -924,7 +1112,9 @@
     "/solutions/{id}": {
       "get": {
         "summary": "Get a specific solution by ID",
-        "tags": ["Solutions"],
+        "tags": [
+          "Solutions"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -949,8 +1139,10 @@
     },
     "/tools": {
       "get": {
-        "summary": "Retrieve a list of all tools",
-        "tags": ["Tools"],
+        "summary": "Retrieve a list of all tools (general catalog)",
+        "tags": [
+          "Tools"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -981,7 +1173,48 @@
         ],
         "responses": {
           "200": {
-            "description": "A list of tools"
+            "description": "A paginated list of all tools"
+          }
+        }
+      }
+    },
+    "/tools/for-me": {
+      "get": {
+        "summary": "Personalized tools catalog based on user's professional profile",
+        "description": "PRD Feature 3 — Returns tools grouped by skill category, filtered to the authenticated user's core role and industry. After completing onboarding, users can browse this catalog as an alternative to the AI search flow. If the user has no professional profile yet, all tools are returned ungrouped.\n",
+        "tags": [
+          "Tools"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Personalized tools catalog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "grouped": {
+                      "type": "boolean"
+                    },
+                    "role": {
+                      "type": "string"
+                    },
+                    "industry": {
+                      "type": "string"
+                    },
+                    "catalog": {
+                      "type": "object",
+                      "description": "Tools grouped by category key"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -989,7 +1222,9 @@
     "/tools/{id}": {
       "get": {
         "summary": "Get a specific tool by ID",
-        "tags": ["Tools"],
+        "tags": [
+          "Tools"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1015,7 +1250,9 @@
     "/user/me": {
       "get": {
         "summary": "Get current user profile",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "Current user profile retrieved",
@@ -1033,7 +1270,9 @@
     "/user/me/professional-profile": {
       "patch": {
         "summary": "Update current user's professional profile onboarding information",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -1110,7 +1349,9 @@
     "/user": {
       "get": {
         "summary": "Get all users (Admin only)",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1124,7 +1365,9 @@
       },
       "post": {
         "summary": "Create a new user (Super Admin only)",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1136,7 +1379,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["name", "email", "password"],
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
                 "properties": {
                   "name": {
                     "type": "string"
@@ -1149,7 +1396,11 @@
                   },
                   "role": {
                     "type": "string",
-                    "enum": ["user", "admin", "super-admin"]
+                    "enum": [
+                      "user",
+                      "admin",
+                      "super-admin"
+                    ]
                   }
                 }
               }
@@ -1166,7 +1417,9 @@
     "/user/{id}": {
       "get": {
         "summary": "Get user by ID (Admin only)",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1185,7 +1438,9 @@
       },
       "patch": {
         "summary": "Update user (Super Admin only)",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1213,7 +1468,9 @@
       },
       "delete": {
         "summary": "Delete user (Super Admin only)",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1234,7 +1491,9 @@
     "/workflows": {
       "get": {
         "summary": "Retrieve a list of all workflows",
-        "tags": ["Workflows"],
+        "tags": [
+          "Workflows"
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1273,7 +1532,9 @@
     "/workflows/{id}": {
       "get": {
         "summary": "Get a specific workflow by ID",
-        "tags": ["Workflows"],
+        "tags": [
+          "Workflows"
+        ],
         "security": [
           {
             "bearerAuth": []

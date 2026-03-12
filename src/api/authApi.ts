@@ -11,6 +11,13 @@ interface AuthResponse {
   accessToken: string;
 }
 
+export interface RegisterPayload extends LoginPayload {
+  name: string;
+}
+
+export const register = (payload: RegisterPayload) =>
+  api.post<AuthResponse>("/auth/register", payload).then((res) => res.data);
+
 export const login = (payload: LoginPayload) =>
   api.post<AuthResponse>("/auth/login", payload).then((res) => res.data);
 
@@ -22,4 +29,4 @@ export const logout = () =>
   api.post("/auth/logout", {}).then((res) => res.data);
 
 export const getMe = () =>
-  api.get<AuthUser>("/auth/me").then((res) => res.data);
+  api.get<AuthResponse>("/auth/me").then((res) => res.data);
